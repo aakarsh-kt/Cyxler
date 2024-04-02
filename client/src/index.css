@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: cursive;
+
+
+}
+
+.flex{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.flex--gap{
+  gap:10px;
+}
+.mask{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.auto{
+   width: 200px;
+   height: 56px;
+}
+  .navbar--list{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .navbar--cont{
+    width: 100vw;
+    height: 50px;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .icon{
+    font-size:2em;
+    
+  }
+
+
+.footer--cont{
+    /* position: fixed;
+    bottom:0; */
+    background-color: rgba(225, 202, 50, 0.571);
+   height: 52.79px;
+   width:100vw;
+    /* margin-top: auto; */
+}
+.footer--list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    gap:150px;
+    /* cursor: pointer; */
+    /* margin-left: 70%; */
+}
+.map-wrap {
+    position: relative;
+    width:80vw;
+    /* height: calc(100vh - 77px); calculate height of the screen minus the heading */
+    height:calc(100vh - 116px - 42.4px);
+  }
+  
+  #map {
+    /* position: absolute; */
+    width:90vw;
+    height:calc(100vh - 116px - 42.4px);
+  }
+
+  .login--cont{
+    display: flex;
+    flex-direction: column  ;
+    /* gap: 20px; */
+    align-items: center;
+    margin-top: 25vh;
+
+  }
+  .login--form{
+    display: flex;
+    flex-direction: column;
+    /* gap: 20px; */
+  }
