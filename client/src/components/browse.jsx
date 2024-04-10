@@ -11,7 +11,7 @@ export default function (props) {
             <h3 className="standard--item">{item.from}</h3>
             <h3 className="standard--item">{item.owner}</h3>
             <Link
-              to={`/booking?loc=${item.from}&owner=${item.owner}`}
+              to={`/app/booking?user=${props.user.email}&loc=${item.from}&owner=${item.owner}`}
               style={{ textDecoration: "none" }}
             >
               <Button type="primary" onClick={() => props.bookCycle(item)}>

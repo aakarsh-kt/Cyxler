@@ -1,22 +1,21 @@
 import React from "react";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
-
+import Sidebar from "./components/sidebar";
+import { getAuth } from "firebase/auth";
 import Maps from "./components/Maps";
-import MainContent from "./components/Rent.jsx";
+import Rent from "./components/Rent.jsx";
 import Result from "./components/Result";
 import { FloatButton } from "antd";
 
-import { Outlet, Link } from "react-router-dom";
 import {
-  onSnapshot,
-  addDoc,
-  doc,
-  deleteDoc,
   collection,
+  doc,
   query,
   where,
   getDocs,
+  addDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { Collection, db, Users } from "./firebase.js";
 import AddCycle from "./components/AddCycle";
@@ -34,15 +33,26 @@ export default function () {
     to: "",
     time: 0,
   });
+  React.useEffect(() => {
+    const unsubscribe = onSnapshot(Collection, function (snapshot) {
+      const cycleArray = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setData(cycleArray);
+    });
+
+    return unsubscribe;
+  }, []);
   const [data, setData] = React.useState([
-    { from: "Y4", owner: "P1" },
-    { from: "Y3", owner: "P2" },
-    { from: "G4", owner: "P3" },
-    { from: "G3", owner: "P4" },
-    { from: "LHC", owner: "P5" },
+    { from: "Y4", owner: "b22cs006@iitj.ac.in" },
+    { from: "Y3", owner: "b22cs006@iitj.ac.in" },
+    { from: "G4", owner: "b22cs006@iitj.ac.in" },
+    { from: "G3", owner: "b22cs006@iitj.ac.in" },
+    { from: "LHC", owner: "b22cs006@iitj.ac.in" },
   ]);
   const [isMapVisible, setIsMapVisible] = React.useState(false);
-  function handleChange(input) {
+  function rentCycle(input) {
     console.log(input);
     setFormData({
       from: input.from,
@@ -68,9 +78,16 @@ export default function () {
       setVal(true);
     }
   }
+
+  const auth = getAuth();
+  const UserCurr = auth.currentUser;
+  console.log(UserCurr?.email);
   const [markerPositions, setMarkerPositions] = React.useState([]);
-  function addCycle(event) {
-    setData([...data, { from: event.from, owner: event.owner }]);
+  async function addCycle(event) {
+    const cyc = { from: event.from, owner: UserCurr.email };
+    const ref = await addDoc(Collection, cyc);
+
+    setData([...data, { from: event.from, owner: UserCurr.email }]);
     const location = event.from;
     setMarkerPositions([...markerPositions, location]);
     console.log(location);
@@ -93,7 +110,7 @@ export default function () {
   //   console.log(bookData);
   // }, [bookData]);
   const [email, setEmail] = React.useState("");
-  
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const email2 = searchParams.get("user");
@@ -150,8 +167,8 @@ export default function () {
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
-      // console.log(currentUser.email);
     });
+
     // console.log(userFirebase);
     return () => unsubscribe();
   }, []);
@@ -159,24 +176,34 @@ export default function () {
     await signOut(auth);
     navigate("/");
   }
+  console.log(user);
   return (
     <div className="mask">
-      {/* {console.log(user)} */}
       <NavBar user={user} logout={logout} />
+      <div className="division">
+        <div className="mask1">
+          {/* {console.log(user)} */}
 
-      {/* <MainContent formData={formData} handleChange={handleChange} /> */}
-      <AddCycle addCycle={addCycle} />
-      {val && <Result dat={res} />}
-      {isMapVisible && <Maps markerPositions={markerPositions} />}
-      <Button onClick={() => setIsMapVisible(!isMapVisible)}>Show Map</Button>
-      <div>
-        <Button type="primary" onClick={toggleBrowse}>
-          Browse
-        </Button>
-        {browse && <Browse data={data} bookCycle={bookCycle} />}
+          <Rent formData={formData} handleChange={rentCycle} />
+          {val && <Result dat={res} bookCycle={bookCycle} user={user} />}
+          <AddCycle addCycle={addCycle} />
+          {isMapVisible && <Maps markerPositions={markerPositions} />}
+          <Button onClick={() => setIsMapVisible(!isMapVisible)}>
+            Show Map
+          </Button>
+          <div>
+            <Button type="primary" onClick={toggleBrowse}>
+              Browse
+            </Button>
+            {browse && <Browse data={data} bookCycle={bookCycle} user={user} />}
+          </div>
+          <FloatButton />
+          {/* <Footer /> */}
+        </div>
+        <div className="mask2">
+          <Sidebar />
+        </div>
       </div>
-      <FloatButton />
-      {/* <Footer /> */}
     </div>
   );
 }

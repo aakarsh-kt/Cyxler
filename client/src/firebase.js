@@ -17,5 +17,6 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const db = getFirestore(app);
-export const Collection = collection(db, "CylesColl");
-export const Users=collection(db,"Users");
+export const Collection = collection(db, "CyclesColl");
+export const Users = collection(db, "Users");
+export const Chats = collection(db, "Chats");

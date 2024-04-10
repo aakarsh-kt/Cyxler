@@ -8,9 +8,7 @@ export default function (props) {
   function handleChange1(event) {
     setDat((prev) => ({ ...prev, from: event }));
   }
-  function handleChange2(event) {
-    setDat((prev) => ({ ...prev, owner: event.target.value }));
-  }
+ 
   return (
     <div>
       <h1>Add Cycle</h1>
@@ -25,12 +23,7 @@ export default function (props) {
           placeholder="Location"
           onChange={handleChange1}
         />
-        <TextField
-          id="standard-basic"
-          placeholder="Owner"
-          onChange={handleChange2}
-        />
-
+       
         <Button type="primary" onClick={() => props.addCycle(dat)}>
           Add
         </Button>

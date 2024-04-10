@@ -13,6 +13,7 @@ import { Link, Outlet } from "react-router-dom";
 export default function () {
   const navigate = useNavigate();
   const [user, setUser] = React.useState(null);
+  
   async function login(event) {
     event.preventDefault();
     try {
