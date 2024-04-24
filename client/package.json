@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.3.5",
     "@maptiler/sdk": "^1.2.1",
+    "@mui/icons-material": "^5.15.15",
     "@react-google-maps/api": "^2.19.3",
     "@vis.gl/react-google-maps": "^0.7.1",
     "ant-design": "^1.0.0",

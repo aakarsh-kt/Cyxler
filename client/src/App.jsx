@@ -17,7 +17,7 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { Collection, db, Users } from "./firebase.js";
+import { Collection, db, Users,eventCollection } from "./firebase.js";
 import AddCycle from "./components/AddCycle";
 import Browse from "./components/browse";
 import { Button } from "antd";
@@ -26,6 +26,7 @@ import { auth } from "./firebase.js";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { coordinates } from "./components/coordinates.jsx";
+import { nanoid } from "nanoid";
 export default function () {
   const navigate = useNavigate();
   const [formData, setFormData] = React.useState({
@@ -51,6 +52,7 @@ export default function () {
     { from: "G3", owner: "b22cs006@iitj.ac.in" },
     { from: "LHC", owner: "b22cs006@iitj.ac.in" },
   ]);
+  const [eventList, setEventList] = React.useState([{}]);
   const [isMapVisible, setIsMapVisible] = React.useState(false);
   function rentCycle(input) {
     console.log(input);
@@ -63,6 +65,7 @@ export default function () {
   }
   const [res, setRes] = React.useState([{ from: "" }]);
   const [val, setVal] = React.useState(false);
+  const [exportCord, setExportCord] = React.useState([]);
   function searchCycle(input) {
     const dat = data.filter((item) => {
       if (item.from === input.from) {
@@ -89,8 +92,18 @@ export default function () {
 
     setData([...data, { from: event.from, owner: UserCurr.email }]);
     const location = event.from;
-    setMarkerPositions([...markerPositions, location]);
+    setMarkerPositions([...markerPositions, { location }]);
     console.log(location);
+    // markerPositions.forEach((position,item) => {
+    console.log("working");
+    coordinates.forEach((cordi) => {
+      // console.log(position);
+      if (location === cordi.loc) {
+        console.log("Match Found");
+        setExportCord([...exportCord, { id: nanoid(), cordi: cordi.cord }]);
+      }
+    });
+    // });
     console.log(markerPositions);
     // console.log(data.length);
   }
@@ -163,7 +176,10 @@ export default function () {
 
     fetchData();
   }, [email]);
-
+  function addEvent(values) {
+    const ref = addDoc(eventCollection, values);
+    setEventList([...eventList, values]);
+  }
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
@@ -180,6 +196,7 @@ export default function () {
   return (
     <div className="mask">
       <NavBar user={user} logout={logout} />
+      <h1>Your own IITJ Community</h1>
       <div className="division">
         <div className="mask1">
           {/* {console.log(user)} */}
@@ -187,11 +204,14 @@ export default function () {
           <Rent formData={formData} handleChange={rentCycle} />
           {val && <Result dat={res} bookCycle={bookCycle} user={user} />}
           <AddCycle addCycle={addCycle} />
-          {isMapVisible && <Maps markerPositions={markerPositions} />}
+          {isMapVisible && (
+            <Maps markerPositions={markerPositions} exportCord={exportCord} />
+          )}
           <Button onClick={() => setIsMapVisible(!isMapVisible)}>
-            Show Map
+            {`${isMapVisible ? "Hide" : "Show"} Map`}
           </Button>
           <div>
+            {console.log(markerPositions)}
             <Button type="primary" onClick={toggleBrowse}>
               Browse
             </Button>
@@ -201,7 +221,7 @@ export default function () {
           {/* <Footer /> */}
         </div>
         <div className="mask2">
-          <Sidebar />
+          <Sidebar addEvent={addEvent} />
         </div>
       </div>
     </div>

@@ -1,19 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import { Chats, db } from "../firebase";
+import { db } from "../firebase";
 import { useLocation } from "react-router";
 import io from "socket.io-client";
-import {
-  onSnapshot,
-  addDoc,
-  doc,
-  deleteDoc,
-  setDoc,
-  arrayUnion,
-  updateDoc,
-} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { on } from "events";
+import { getAuth } from "firebase/auth";
 const ChatWindow = () => {
   const socket = io("ws://localhost:3000");
   const [messages, setMessages] = useState([]);
@@ -21,61 +11,33 @@ const ChatWindow = () => {
   const messagesEndRef = useRef(null);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const loc = searchParams.get("loc");
   const user2 = searchParams.get("owner");
-  const user = searchParams.get("user");
   const auth = getAuth();
-  const [user1, setUser1] = React.useState(null);
+  const [user1, setUser1] = useState(null);
 
-  const [chatId, setChatId] = useState("");
-  const user1Promise = new Promise((resolve, reject) => {
-    onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        // setUser1(currentUser.email);
-        // console.log(currentUser.email);
-        resolve(currentUser.email); // Resolve the Promise with user1 value
-      } else {
-        reject(new Error("No user")); // Reject the Promise if there is no user
-      }
-    });
-  });
-  React.useEffect(() => {
-    const unsubscribe = onSnapshot(Chats, (snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        const data = doc.data();
-        if (
-          (data.sender === user1 && data.receiver === user2) ||
-          (data.sender === user2 && data.receiver === user1)
-        ) {
-          setChatId(doc.id);
-          // setMessages(data.thread);
-        }
-      });
-      // Handle snapshot changes
-    });
-
-    return () => {
-      unsubscribe(); // Unsubscribe from snapshot listener when component unmounts
-    };
+  useEffect(() => {
+    setUser1(auth.currentUser);
   }, []);
 
-  user1Promise.then((user1) => {
-    console.log(user1, user2);
-
-    console.log(chatId);
-  });
-  // console.log(user1Promise);
-  console.log("Hello there mate!!");
-  async function addMessage(inputValue, chatId) {
-    const ref = doc(db, "Chats", chatId);
-    await updateDoc(ref, {
-      thread: arrayUnion(inputValue),
+  useEffect(() => {
+    socket.on("message", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
     });
+  }, []);
+
+  function sendMessage() {
+    if (inputValue.trim() === "") return;
+
+    const message = {
+      sender: user1, // Assuming user1 is the sender
+      text: inputValue,
+    };
+
+    socket.emit("message", message); // Emit message through socket
+
+    setInputValue(""); // Clear input field
   }
-  async function deleteChat(id) {
-    const docRef = doc(db, "Chats", id);
-    await deleteDoc(docRef);
-  }
+
   return (
     <div className="flex--column">
       <NavBar />
@@ -84,9 +46,9 @@ const ChatWindow = () => {
           {messages.map((message, index) => (
             <div
               key={index}
-              // className={`message ${
-              //   message.sender === user1Promise.finally ? "sent" : "received"
-              // }`}
+              className={`message ${
+                message.sender === user1 ? "sent" : "received"
+              }`}
             >
               <div className="message-text">{message.text}</div>
             </div>
@@ -104,10 +66,7 @@ const ChatWindow = () => {
               if (e.key === "Enter") sendMessage();
             }}
           />
-          <button
-            //  onClick={sendMessage}
-            className="send-button"
-          >
+          <button onClick={sendMessage} className="send-button">
             Send
           </button>
         </div>

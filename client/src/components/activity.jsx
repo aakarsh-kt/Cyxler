@@ -2,8 +2,9 @@ import React from "react";
 import { Form, Input, Button, AutoComplete } from "antd";
 import { options } from "./options.jsx";
 
-export default function () {
+export default function (props) {
   function onFinish(values) {
+    props.addEvent(values);
     console.log(values);
   }
   function onFinishFailed(values) {
@@ -11,7 +12,7 @@ export default function () {
   }
   return (
     <>
-      <h3>Add an event</h3>
+      {/* <h3>Add an event</h3> */}
       <Form
         name="basic"
         initialValues={{ remember: true }}
@@ -46,19 +47,31 @@ export default function () {
           />
         </Form.Item>
         <Form.Item
-          label="Duration(hrs)"
-          name="duration"
+          label="From (hrs)"
+          name="from"
           rules={[{ required: true, message: "Please input duration!" }]}
         >
           <Input type="number" />
         </Form.Item>
         <Form.Item
+          label="To (hrs)"
+          name="to"
+          rules={[{ required: true, message: "Please input duration!" }]}
+        >
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item
+        
           label="Mode"
           name="mode"
           rules={[{ required: true, message: "Please input mode!" }]}
+          style={{ display: "flex", flexDirection: "row",justifyContent:"space-between",gap:"10px"}}
         >
-
-          <Input type="radio" />
+            <div style={{display: "flex", flexDirection: "row",justifyContent:"space-between",gap:"10px"}}>
+         <input type="radio"  name="mode" defaultValue={false}/>Online
+ 
+          <input type="radio" name="mode"defaultValue={false} />Offline
+          </div>
           
         </Form.Item>
 

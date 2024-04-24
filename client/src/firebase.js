@@ -20,3 +20,5 @@ export const db = getFirestore(app);
 export const Collection = collection(db, "CyclesColl");
 export const Users = collection(db, "Users");
 export const Chats = collection(db, "Chats");
+export const eventCollection = collection(db, "Events");
+export const questionCollection=collection(db,"Questions");

@@ -3,11 +3,11 @@ import { Button } from "antd";
 import { Drawer } from "antd";
 import {
   MessageFilled,
-  CloudFilled,
   FireFilled,
   UserOutlined,
   HomeFilled,
 } from "@ant-design/icons";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { getAuth } from "firebase/auth";
 import { Avatar } from "antd";
 import { Link, Outlet } from "react-router-dom";
@@ -19,7 +19,7 @@ export default function (props) {
 
   const auth = getAuth();
   const UserCurr = auth.currentUser;
-  
+
   function gotoHome() {
     window.location.href = "/app?user=" + UserCurr?.email;
   }
@@ -28,14 +28,27 @@ export default function (props) {
       {/* {console.log(props.user)} */}
       <nav>
         <ul className="navbar--list">
-          <HomeFilled className="icon" onClick={gotoHome} />
+          <HomeFilled className="icon" onClick={gotoHome}style={{ color: "black" }}  />
           <Link
             to="/inbox"
             style={{ textDecoration: "none", cursor: "pointer" }}
           >
             <MessageFilled className="icon" style={{ color: "black" }} />
           </Link>
-          <FireFilled className="icon" />
+          <Link
+            to="/forum"
+            style={{ textDecoration: "none", cursor: "pointer" }}
+          >
+            <FireFilled className="icon" style={{ color: "black" }} />
+            
+
+          </Link>
+          <Link
+            to="/groups"
+            style={{ textDecoration: "none", cursor: "pointer" }}
+          >
+            <PeopleAltIcon style={{ color: "black" }} />
+          </Link>
           <Avatar
             icon={<UserOutlined className="icon" />}
             onClick={handleDrawer}
@@ -48,6 +61,7 @@ export default function (props) {
             onClose={handleDrawer}
             open={open}
           >
+            <img src="download.png" alt="profile" className="pfp"/>
             <h2>{UserCurr?.username}</h2>
             <h2>{UserCurr?.email}</h2>
             <Button type="primary" onClick={props.logout}>

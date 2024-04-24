@@ -2,11 +2,58 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: cursive;
+    /* font-family: cursive; */
 
 
 }
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
 
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+/* body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+} */
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
 .flex{
   display: flex;
   flex-direction: row;
@@ -17,9 +64,15 @@
 }
 .res--1{
   background-color: burlywood;
+  flex: 1;
 }
 .res--2{
   background-color: burlywood;
+  flex: 1;
+}
+.res--3{
+  background-color: burlywood;
+  flex: 1;
 }
 .flex--column{
   display: flex;
@@ -43,22 +96,22 @@
    width: 200px;
    height: 56px;
 }
-  .navbar--list{
-    display: flex;
-    justify-content: space-evenly;
-  }
-  .navbar--cont{
-    width: 100vw;
-    height: 50px;
-    background-color: antiquewhite;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .icon{
-    font-size:2em;
-    
-  }
+    .navbar--list{
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .navbar--cont{
+      width: 100vw;
+      height: 50px;
+      background-color: antiquewhite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .icon{
+      font-size:2em;
+      
+    }
 
 
 .footer--cont{
@@ -136,10 +189,16 @@
 }
 .mask2{
   width: 25vw;
+  height: 70vh;
   margin-top: 20px;
   padding: 20px;
   background-color: bisque;
   border-radius: 3%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  
 
 }
 .message {
@@ -156,10 +215,12 @@
 .sent {
   background-color: #DCF8C6;
   align-self: flex-end;
+  color: black;
 }
 
 .received {
   background-color: #F3F3F3;
+  color: black;
 }
 /* styles.css */
 
@@ -236,4 +297,91 @@
 
 .send-button:hover {
   background-color: #45a049;
+}
+.forum-container {
+  width: 80%;
+  margin: auto;
+}
+
+.forum-header {
+  text-align: center;
+}
+
+.question-form {
+  margin-bottom: 20px;
+}
+
+.question-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.question-submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.questions-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.question-card {
+  background-color: #2f69a2;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.question-title {
+  margin-bottom: 10px;
+}
+
+.answer-form {
+  display: flex;
+  margin-top: 10px;
+}
+
+.answer-input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.answer-submit-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.answer-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.answer-item {
+  padding: 5px 0;
+}
+.pfp{
+  width: 70px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.sidebar--mask{
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  /* gap: 10vh; */
+  gap: 20px;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* background-color: #f8f9fa; */
 }
