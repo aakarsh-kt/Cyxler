@@ -1,4 +1,4 @@
-**Cyxler**
+# Cyxler
 
 This is a Cycle renting cum community app for my college.
 
