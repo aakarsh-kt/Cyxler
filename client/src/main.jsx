@@ -10,6 +10,7 @@ import Chat from "./pages/chat.jsx";
 import Groups from "./pages/Groups.jsx"
 import Inbox from "./pages/Inbox.jsx";
 import Forum from "./pages/Forum.jsx";
+import Cycles from "./pages/cycles.jsx";
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
   { path: "/app", element: <App /> },
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
   { path: `/inbox`, element: <Inbox /> },
   { path: `/forum`, element: <Forum /> },
   { path: `/groups`, element: <Groups /> },
+  {path:`/cycles`,element:<Cycles/>},
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
 

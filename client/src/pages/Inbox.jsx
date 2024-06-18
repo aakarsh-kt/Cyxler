@@ -99,3 +99,89 @@ export default function () {
     </div>
   );
 }
+// import React, { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+
+// const Inbox = () => {
+//   const location = useLocation();
+//   const [user, setUser] = useState("");
+
+//   useEffect(() => {
+//     const searchParams = new URLSearchParams(location.search);
+//     const userParam = searchParams.get("user");
+//     setUser(userParam);
+//   }, [location]);
+
+//   return (
+//     <div>
+//       <h1>Inbox</h1>
+//       <p>User: {user}</p>
+//       {/* Rest of your inbox component */}
+//     </div>
+//   );
+// };
+
+// export default Inbox;
+
+// import React, { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+// import { collection, query, where, orderBy, getDocs, } from "firebase/firestore";
+// import { db } from "../firebase";
+
+// const Inbox = () => {
+//   const location = useLocation();
+//   const [user, setUser] = useState("");
+//   const [messages, setMessages] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const searchParams = new URLSearchParams(location.search);
+//     const userParam = searchParams.get("user");
+//     setUser(userParam);
+
+//     // Fetch messages for the user
+//     fetchMessages(userParam);
+//   }, [location]);
+
+//   const fetchMessages = async (user) => {
+//     try {
+//       const q = query(
+//         collection(db, "Chats"),
+//         orderBy("timestamp", "desc"),
+//         where("sender", "==", user)
+//       );
+//       const querySnapshot = await getDocs(q);
+//       const messageList = [];
+//       querySnapshot.forEach((doc) => {
+//         messageList.push({ id: doc.id, ...doc.data() });
+//       });
+//       setMessages(messageList);
+//       setLoading(false);
+//     } catch (error) {
+//       console.error("Error fetching messages:", error);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h1>Inbox</h1>
+//       <p>User: {user}</p>
+//       {loading ? (
+//         <p>Loading messages...</p>
+//       ) : (
+//         <div>
+//           <h2>Messages</h2>
+//           <ul>
+//             {messages.map((message) => (
+//               <li key={message.id}>
+//                 <strong>{message.sender}:</strong> {message.text}
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Inbox;

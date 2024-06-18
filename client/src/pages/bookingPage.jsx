@@ -17,7 +17,9 @@ export default function () {
       "/app/booking/chat?user=" + user + "&owner=" + owner + "&loc=" + loc
     );
   }
-
+  function bookIt() {
+    console.log("Booked");
+  }
   return (
     <div>
       <Navbar />
@@ -30,7 +32,7 @@ export default function () {
         </div>
         {/* <h3>Are You Sure?</h3> */}
         <div className="flex flex--gap">
-          <Button type="primary">Pay</Button>
+          <Button type="primary" onClick={bookIt}>Book</Button>
           <Button type="primary" onClick={handleChat}>
             Chat
           </Button>

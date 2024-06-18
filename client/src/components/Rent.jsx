@@ -37,7 +37,7 @@ export default function (props) {
           className="auto"
           required
         />
-        <AutoComplete
+        {/* <AutoComplete
           onChange={handleChange2}
           options={options}
           filterOption={(inputValue, option) =>
@@ -45,7 +45,7 @@ export default function (props) {
           }
           placeholder="Search for a location"
           className="auto"
-        />
+        /> */}
 
         <Button type="primary" onClick={() => props.handleChange(input)}>
           Search

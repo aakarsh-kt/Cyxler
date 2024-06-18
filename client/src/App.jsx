@@ -7,7 +7,7 @@ import Maps from "./components/Maps";
 import Rent from "./components/Rent.jsx";
 import Result from "./components/Result";
 import { FloatButton } from "antd";
-
+import Cycles from "./pages/cycles";
 import {
   collection,
   doc,
@@ -17,7 +17,7 @@ import {
   addDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { Collection, db, Users,eventCollection } from "./firebase.js";
+import { Collection, db, Users,eventCollection,MarkerCollection } from "./firebase.js";
 import AddCycle from "./components/AddCycle";
 import Browse from "./components/browse";
 import { Button } from "antd";
@@ -34,6 +34,9 @@ export default function () {
     to: "",
     time: 0,
   });
+  // function reportUser(){
+  //   navigate("/app/report");
+  // }
   React.useEffect(() => {
     const unsubscribe = onSnapshot(Collection, function (snapshot) {
       const cycleArray = snapshot.docs.map((doc) => ({
@@ -53,7 +56,8 @@ export default function () {
     { from: "LHC", owner: "b22cs006@iitj.ac.in" },
   ]);
   const [eventList, setEventList] = React.useState([{}]);
-  const [isMapVisible, setIsMapVisible] = React.useState(false);
+  const [isMapVisible, setIsMapVisible] = React.useState(true);
+
   function rentCycle(input) {
     console.log(input);
     setFormData({
@@ -66,6 +70,19 @@ export default function () {
   const [res, setRes] = React.useState([{ from: "" }]);
   const [val, setVal] = React.useState(false);
   const [exportCord, setExportCord] = React.useState([]);
+
+  React.useEffect(() => {
+    const unsubscribe = onSnapshot(MarkerCollection, function (snapshot) {
+      const markerArray = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      console.log(markerArray);
+      setExportCord(markerArray);
+    });
+
+    return unsubscribe;
+  }, []);
   function searchCycle(input) {
     const dat = data.filter((item) => {
       if (item.from === input.from) {
@@ -100,6 +117,8 @@ export default function () {
       // console.log(position);
       if (location === cordi.loc) {
         console.log("Match Found");
+        const rf= addDoc(MarkerCollection, { id: nanoid(), cordi: cordi.cord });
+
         setExportCord([...exportCord, { id: nanoid(), cordi: cordi.cord }]);
       }
     });
@@ -111,6 +130,7 @@ export default function () {
   function toggleBrowse() {
     setBrowse(!browse);
   }
+  const [bookedCycles,setBookedCycles]=React.useState([]);  
   const [bookData, setBookData] = React.useState({ from: "", owner: "" });
   function bookCycle(item) {
     console.log(item);
@@ -184,26 +204,38 @@ export default function () {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUserFirebase(currentUser);
     });
-
+    
     // console.log(userFirebase);
     return () => unsubscribe();
   }, []);
+  const [en, setEn] = React.useState(false);
+  function dis(){
+    setEn(prev=>!prev);
+    setIsMapVisible(!isMapVisible);
+  }
   async function logout() {
     await signOut(auth);
     navigate("/");
   }
+  const [grps,setGrps]=React.useState([]);
   console.log(user);
+  // function addGroup(info) {
+  //   setGrps([...grps, info]);
+  // }
   return (
     <div className="mask">
       <NavBar user={user} logout={logout} />
+      <br/>
       <h1>Your own IITJ Community</h1>
+      <br/>
+
       <div className="division">
         <div className="mask1">
-          {/* {console.log(user)} */}
-
-          <Rent formData={formData} handleChange={rentCycle} />
-          {val && <Result dat={res} bookCycle={bookCycle} user={user} />}
-          <AddCycle addCycle={addCycle} />
+         
+          
+         {en && <Rent formData={formData} handleChange={rentCycle} />}
+        {val && <Result dat={res} bookCycle={bookCycle} user={user} />}
+         {en &&  <AddCycle addCycle={addCycle} />}
           {isMapVisible && (
             <Maps markerPositions={markerPositions} exportCord={exportCord} />
           )}
@@ -217,11 +249,15 @@ export default function () {
             </Button>
             {browse && <Browse data={data} bookCycle={bookCycle} user={user} />}
           </div>
-          <FloatButton />
+          <FloatButton.Group>
+         <FloatButton href="https://forms.gle/hUB6nx529yaSXGdr8"  description="Report User" />
+        <FloatButton href="https://forms.gle/VrNq9K45ykimTK1i8" description="Report Theft"/>
+
+         </FloatButton.Group >
           {/* <Footer /> */}
         </div>
         <div className="mask2">
-          <Sidebar addEvent={addEvent} />
+          <Sidebar  addEvent={addEvent}  dis={dis}/>
         </div>
       </div>
     </div>

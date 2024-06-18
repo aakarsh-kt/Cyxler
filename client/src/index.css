@@ -2,6 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: hidden;
     /* font-family: cursive; */
 
 
@@ -60,18 +62,18 @@ h1 {
   justify-content: space-between;
 }
 .res{
-  background-color: bisque;
+  background-color: rgb(29, 24, 18);
 }
 .res--1{
-  background-color: burlywood;
+  background-color: rgb(37, 32, 25);
   flex: 1;
 }
 .res--2{
-  background-color: burlywood;
+  background-color: rgb(30, 28, 26);
   flex: 1;
 }
 .res--3{
-  background-color: burlywood;
+  background-color: rgb(31, 28, 24);
   flex: 1;
 }
 .flex--column{
@@ -88,6 +90,8 @@ h1 {
 .mask{
     display: flex;
     flex-direction: column;
+    width:100vw;
+    height: 100vh;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;

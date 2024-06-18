@@ -11,17 +11,22 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import { getAuth } from "firebase/auth";
 import { Avatar } from "antd";
 import { Link, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 export default function (props) {
   const [open, setOpen] = React.useState(false);
   function handleDrawer() {
     setOpen(!open);
   }
-
-  const auth = getAuth();
+ 
+    const auth = getAuth();
   const UserCurr = auth.currentUser;
+  
 
   function gotoHome() {
     window.location.href = "/app?user=" + UserCurr?.email;
+  }
+  function gotoInbox(){
+    window.location.href = "/inbox?user=" + UserCurr?.email;
   }
   return (
     <div className="navbar--cont">
@@ -29,12 +34,9 @@ export default function (props) {
       <nav>
         <ul className="navbar--list">
           <HomeFilled className="icon" onClick={gotoHome}style={{ color: "black" }}  />
-          <Link
-            to="/inbox"
-            style={{ textDecoration: "none", cursor: "pointer" }}
-          >
-            <MessageFilled className="icon" style={{ color: "black" }} />
-          </Link>
+         
+            <MessageFilled className="icon" style={{ color: "black" }} onClick={gotoInbox} />
+          
           <Link
             to="/forum"
             style={{ textDecoration: "none", cursor: "pointer" }}
@@ -62,8 +64,9 @@ export default function (props) {
             open={open}
           >
             <img src="download.png" alt="profile" className="pfp"/>
-            <h2>{UserCurr?.username}</h2>
-            <h2>{UserCurr?.email}</h2>
+            <h2 style={{color:"black"}}>{UserCurr?.username}</h2>
+        
+            <h2 style={{color:"black"}}>{UserCurr?.email}</h2>
             <Button type="primary" onClick={props.logout}>
               Sign Out
             </Button>
